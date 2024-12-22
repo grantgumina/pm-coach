@@ -1,12 +1,14 @@
 from email.mime.text import MIMEText
 import smtplib
 import asyncio
+from config import get_settings
 
 async def add_feedback_comment(issue_key: str, feedback: str):
     """Add feedback as a comment on the Jira ticket"""
+    settings = get_settings()
     jira = JIRA(
-        server='https://your-domain.atlassian.net',
-        basic_auth=('your_email', 'your_api_token')
+        server=settings.JIRA_SERVER,
+        basic_auth=(settings.JIRA_EMAIL, settings.JIRA_API_TOKEN)
     )
     
     comment_body = f"""
@@ -21,7 +23,8 @@ async def add_feedback_comment(issue_key: str, feedback: str):
 
 async def notify_pm(reporter: Dict, feedback: str, issue_key: str):
     """Send email notification to the PM"""
-    sender = "bot@yourcompany.com"
+    settings = get_settings()
+    sender = settings.BOT_EMAIL
     msg = MIMEText(f"""
     Hello {reporter['displayName']},
     
@@ -39,7 +42,8 @@ async def notify_pm(reporter: Dict, feedback: str, issue_key: str):
     msg['From'] = sender
     msg['To'] = reporter['emailAddress']
     
-    # Send email (implement your email sending logic here)
-    # This is a simplified example
-    with smtplib.SMTP('smtp.yourcompany.com') as server:
+    # Updated SMTP connection
+    with smtplib.SMTP(settings.SMTP_SERVER, settings.SMTP_PORT) as server:
+        server.starttls()
+        server.login(settings.SMTP_USERNAME, settings.SMTP_PASSWORD)
         server.send_message(msg) 

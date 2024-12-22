@@ -1,18 +1,17 @@
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.security import HTTPBasicCredentials
+from config import get_settings
 import hmac
 import hashlib
 import json
 
 app = FastAPI()
+settings = get_settings()
 
-# Secret key for webhook validation
-WEBHOOK_SECRET = "your_webhook_secret"
-
+# Update webhook secret
 def verify_webhook_signature(request_body: bytes, signature: str):
     """Verify the webhook signature from Jira"""
     computed_hash = hmac.new(
-        WEBHOOK_SECRET.encode('utf-8'),
+        settings.WEBHOOK_SECRET.encode('utf-8'),
         request_body,
         hashlib.sha256
     ).hexdigest()

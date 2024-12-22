@@ -1,12 +1,14 @@
 from typing import Dict
 import asyncio
 from jira import JIRA
+from config import get_settings
 
 class TicketAnalyzer:
     def __init__(self):
+        settings = get_settings()
         self.jira = JIRA(
-            server='https://your-domain.atlassian.net',
-            basic_auth=('your_email', 'your_api_token')
+            server=settings.JIRA_SERVER,
+            basic_auth=(settings.JIRA_EMAIL, settings.JIRA_API_TOKEN)
         )
         
     async def analyze_ticket(self, issue: Dict) -> str:

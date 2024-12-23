@@ -22,7 +22,9 @@ class TicketAnalyzer:
         """
         Analyze a PRFAQ document and provide detailed feedback
         """
-        template = """You are an expert at reviewing PRFAQ (Press Release/FAQ) documents. Analyze the following PRFAQ and provide specific, actionable feedback to improve it. For each issue identified, include a concrete example of how it could be better.
+        template = """You are an expert at reviewing PRFAQ (Press Release/FAQ) documents. 
+        Analyze the following PRFAQ and provide specific, actionable feedback to improve it. 
+        For each issue identified, include a concrete example of how it could be better.
 
         Focus on:
         - Clarity of the customer benefit
@@ -35,7 +37,8 @@ class TicketAnalyzer:
         {description}
 
         Just put your feedback here. Don't add any headings or summary up front. 
-        Provide a concise easy to read summary of the feedback, using markdown formatting."""
+        Provide a concise easy to read summary of the feedback, using markdown formatting and bold 
+        important sentences which possibly summarize your points."""
 
         prompt = ChatPromptTemplate.from_template(template)
         chain = prompt | self.llm

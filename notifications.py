@@ -13,13 +13,15 @@ async def add_feedback_comment(issue_key: str, feedback: str):
     # Get the issue details to find the reporter
     issue = jira.issue(issue_key)
     
+    # Find the Jira user ID to tag in the comment.
+    # If the ticket is assigned to a user, tag them. 
+    # Otherwise assume the reporter is the PM and tag them.
     if issue.fields.assignee is not None:
         cc_id = issue.fields.assignee.accountId
     else:
         cc_id = issue.fields.reporter.accountId
     
-    # Format the mention using Jira's [~username] syntax
-    
+    # Format the mention using Jira's [~accountId] syntax
     cc_mention = f"[~accountid:{cc_id}]"
 
     comment_body = f"""

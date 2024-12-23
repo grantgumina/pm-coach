@@ -12,21 +12,22 @@ async def add_feedback_comment(issue_key: str, feedback: str):
     )
     # Get the issue details to find the reporter
     issue = jira.issue(issue_key)
-    print(dir(issue.fields.reporter))
-    reporter_id = issue.fields.reporter.accountId
+    
+    if issue.fields.assignee is not None:
+        cc_id = issue.fields.assignee.accountId
+    else:
+        cc_id = issue.fields.reporter.accountId
     
     # Format the mention using Jira's [~username] syntax
-    reporter_mention = f"[~accountid:{reporter_id}]"
-    print(reporter_mention)
+    
+    cc_mention = f"[~accountid:{cc_id}]"
 
     comment_body = f"""
     🤖 Automated Ticket Review
     
     {feedback}
     
-    // cc {reporter_mention}
+    // cc {cc_mention}
     """
-
-    print(comment_body)
     
     jira.add_comment(issue_key, comment_body)

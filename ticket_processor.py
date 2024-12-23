@@ -56,7 +56,7 @@ class TicketAnalyzer:
 
             # Analyze PRFAQ with LangChain
             description = issue['fields']['description']
-            if description:
+            if description and "❌" not in feedback:
                 try:
                     prfaq_feedback = await self.analyze_prfaq(description)
                     feedback_points.append("\nPRFAQ Analysis:")
@@ -85,6 +85,10 @@ class TicketAnalyzer:
         """Analyze a ticket and return feedback"""
         feedback = []
         
+        # Check assignee
+        if issue['fields']['assignee'] is None:
+            feedback.append("❌ Assignee is missing")
+
         # Check description
         if not issue['fields']['description']:
             feedback.append("❌ Description is missing")

@@ -32,4 +32,8 @@ flake8>=6.1.0
 
 # Environment variables
 python-dotenv>=1.0.0
-pydantic-settings>=2.0.3 
+pydantic-settings>=2.0.3
+
+# Added from the code block
+langchain>=0.1.0
+openai>=1.12.0

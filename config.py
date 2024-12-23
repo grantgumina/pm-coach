@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     JIRA_EMAIL: str
     JIRA_API_TOKEN: str
     WEBHOOK_SECRET: str
-
+    OPENAI_API_KEY: str
     class Config:
         env_file = ".env"
 

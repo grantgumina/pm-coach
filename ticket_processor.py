@@ -29,16 +29,19 @@ class TicketAnalyzer:
         Focus on:
         - Clarity of the customer benefit
         - Specificity of the solution
-        - Are artifacts like links to Google Docs or screenshots included?
+        - Are artifacts like links to Google Docs or mockups included. Look specifically for "google.com" 
+        and "figma.com" links. If any are included, assume you don't need to comment on this evaluation criteria.
         - Included customer quotes and testimonials
         - Measurable outcomes and success metrics
+
+        If each of these criteria are met, feel free to say nothing.'
         
         PRFAQ:
         {description}
 
         Just put your feedback here. Don't add any headings or summary up front. 
         Provide a concise easy to read summary of the feedback, using markdown formatting and bold 
-        important sentences which possibly summarize your points."""
+        important sentences which possibly summarize your bullet points."""
 
         prompt = ChatPromptTemplate.from_template(template)
         chain = prompt | self.llm

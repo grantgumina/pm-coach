@@ -1,4 +1,4 @@
-# Project Name
+# PM Coach
 
 ## Summary
 A brief description of your project goes here. Please replace this text with a concise explanation of what your project does and its main features.

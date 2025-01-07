@@ -4,7 +4,7 @@ from jira import JIRA
 from config import get_settings
 import logging
 from notifications import add_feedback_comment
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
 logger = logging.getLogger(__name__)

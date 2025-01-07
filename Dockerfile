@@ -15,9 +15,8 @@ COPY . .
 
 # Configure environment variables
 ENV PORT=8080
-
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Command to run the application
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app 
+CMD exec uvicorn app:app --host 0.0.0.0 --port $PORT

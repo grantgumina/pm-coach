@@ -19,7 +19,11 @@ A brief description of your project goes here. Please replace this text with a c
    cp .env.example .env
    ```
 
-2. Install required dependencies
+1. Create API keys and webhooks
+   - Jira webhook (see [Jira docs](https://developer.atlassian.com/server/jira/platform/webhooks/)). You'll likely need to be a Jira administrator. 
+   - OpenAI API key (see [OpenAI docs](https://platform.openai.com/docs/quickstart))
+
+1. Install required dependencies
    Locally:
    ```bash
    pip install -r requirements.txt
@@ -30,7 +34,7 @@ A brief description of your project goes here. Please replace this text with a c
    docker build -t pm-coach .
    ```
 
-3. Run the application
+1. Run the application
    Locally:
    ```bash
    fastapp run app.py

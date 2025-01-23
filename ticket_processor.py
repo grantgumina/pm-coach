@@ -49,6 +49,74 @@ class TicketAnalyzer:
         result = await chain.ainvoke({"description": description})
         return result.content
 
+    async def analyze_prfaq_with_history(self, 
+                                       ticket_key: str, 
+                                       current_description: str) -> str:
+        """
+        Analyze PRFAQ with historical context
+        """
+        # Get ticket history
+        history = await self.supabase.get_ticket_history(ticket_key)
+        
+        # Find similar tickets
+        similar_tickets = await self.supabase.search_similar_tickets(current_description)
+        
+        template = """You are an expert at reviewing PRFAQ documents.
+        
+        {history_context}
+        
+        {similar_tickets_context}
+        
+        Analyze the following PRFAQ and provide specific, actionable feedback to improve it.
+        
+        Current PRFAQ:
+        {description}
+        
+        Focus on:
+        - Clarity of the customer benefit
+        - Specificity of the solution
+        - Are artifacts like links to Google Docs or mockups included. Look specifically for "google.com" 
+        and "figma.com" links. If any are included, assume you don't need to comment on this evaluation criteria.
+        - Included customer quotes and testimonials
+        - Measurable outcomes and success metrics
+        
+        Provide feedback in this format:
+        1. Previous Feedback Status (if applicable)
+        2. Improvements from Last Version (if applicable)
+        3. New Feedback Points
+        """
+        
+        # Prepare context from history
+        history_context = ""
+        if history:
+            previous_version = history[0]  # Most recent version
+            history_context = f"""
+            Previous version feedback:
+            {previous_version['feedback']}
+            
+            Previous description:
+            {previous_version['description']}
+            """
+            
+        # Prepare context from similar tickets
+        similar_tickets_context = ""
+        if similar_tickets:
+            similar_tickets_context = "Similar successful PRFAQs patterns:\n"
+            for ticket in similar_tickets:
+                similar_tickets_context += f"- {ticket['key']}: {ticket['summary']}\n"
+        
+        prompt = ChatPromptTemplate.from_template(template)
+        chain = prompt | self.llm
+        
+        result = await chain.ainvoke({
+            "description": current_description,
+            "history_context": history_context,
+            "similar_tickets_context": similar_tickets_context
+        })
+        
+        return result.content
+
+
     async def process_ticket(self, issue: Dict) -> None:
         try:
             ticket_key = issue['key']

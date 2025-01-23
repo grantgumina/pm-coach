@@ -1,7 +1,9 @@
 # PM Coach
 
 ## Summary
-A brief description of your project goes here. Please replace this text with a concise explanation of what your project does and its main features.
+The PM coach is a webhook based agent that helps PMs with their Jira tickets. It uses OpenAI to generate evaluations of the PRFAQ documents BetterCloud PMs attach to Jira tickets. It will ensure that specific fields are filled out and provide guidance to the PM on how to improve their PRFAQ document. Many of the settings are hardcoded for BetterCloud's Jira instance, but it should be easy to modify for other Jira instances.
+
+![alt text](image.png)
 
 ## Requirements
 - Python 3.8 or higher
